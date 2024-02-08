@@ -1,0 +1,5 @@
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  expiry-seconds:
+    access-token: 1800
+    refresh-token: 604800
