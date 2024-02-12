@@ -31,10 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthFacade authFacade;
-
-    // TODO: TOKEN_TYPE은 JwtProvider 단에서 아예 TokenDto에 넣어주는 것이 낫나?
-    private static final String TOKEN_TYPE = "Bearer";
-
     private static final String ACCESS_TOKEN = "access_token";
     private static final String REFRESH_TOKEN = "refresh_token";
     // TODO: EXPIRATION_SECONDS 따로 관리
@@ -60,7 +56,8 @@ public class AuthController {
         ResponseCookie refreshTokenCookie = createTokenCookie(REFRESH_TOKEN, token.refreshToken());
 
         // create response
-        AuthResponse response = AuthResponse.of(token.accessToken(), token.refreshToken(), TOKEN_TYPE);
+        // TODO: 현재는 AuthReponse와 TokenDto의 필드가 동일하므로 필요 없는 과정일 수도 있음
+        AuthResponse response = AuthResponse.of(token.accessToken(), token.refreshToken(), token.tokenType());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())

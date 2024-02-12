@@ -32,6 +32,7 @@ import org.springframework.stereotype.Component;
 public class JwtProvider {
 
     private static final Long MILLI_SECOND = 1000L;
+    private static final String TOKEN_TYPE = "Bearer";
     private static final String ID_KEY = "memberId";
     private static final String ROLE_KEY = "role";
     private static final String DEFAULT_ROLE = MemberRole.USER.getRole();
@@ -129,7 +130,7 @@ public class JwtProvider {
     public TokenDto generateToken(Long memberId) {
         String accessToken = createAccessToken(memberId);
         String refreshToken = createRefreshToken(memberId);
-        return TokenDto.of(accessToken, refreshToken);
+        return TokenDto.of(accessToken, refreshToken, TOKEN_TYPE);
     }
 
 }
