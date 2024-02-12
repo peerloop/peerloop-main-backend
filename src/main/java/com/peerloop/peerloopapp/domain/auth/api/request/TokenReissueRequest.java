@@ -1,4 +1,4 @@
-package com.peerloop.peerloopapp.domain.auth.dto.request;
+package com.peerloop.peerloopapp.domain.auth.api.request;
 
 import jakarta.validation.constraints.NotBlank;
 

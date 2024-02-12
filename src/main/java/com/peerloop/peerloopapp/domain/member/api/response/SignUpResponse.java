@@ -1,4 +1,4 @@
-package com.peerloop.peerloopapp.domain.member.dto.response;
+package com.peerloop.peerloopapp.domain.member.api.response;
 
 public record SignUpResponse(
         Long memberId

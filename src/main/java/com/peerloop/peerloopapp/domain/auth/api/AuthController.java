@@ -1,9 +1,9 @@
 package com.peerloop.peerloopapp.domain.auth.api;
 
-import com.peerloop.peerloopapp.domain.auth.dto.request.LogInRequest;
-import com.peerloop.peerloopapp.domain.auth.dto.request.TokenReissueRequest;
-import com.peerloop.peerloopapp.domain.auth.dto.response.AuthResponse;
-import com.peerloop.peerloopapp.domain.auth.dto.response.TokenReissueResponse;
+import com.peerloop.peerloopapp.domain.auth.api.request.LogInRequest;
+import com.peerloop.peerloopapp.domain.auth.api.request.TokenReissueRequest;
+import com.peerloop.peerloopapp.domain.auth.api.response.AuthResponse;
+import com.peerloop.peerloopapp.domain.auth.api.response.TokenReissueResponse;
 import com.peerloop.peerloopapp.domain.auth.facade.AuthFacade;
 import com.peerloop.peerloopapp.global.auth.jwt.dto.MemberDetails;
 import com.peerloop.peerloopapp.global.auth.jwt.dto.TokenDto;

@@ -1,4 +1,4 @@
-package com.peerloop.peerloopapp.domain.auth.dto.response;
+package com.peerloop.peerloopapp.domain.auth.api.response;
 
 public record TokenReissueResponse(
         String accessToken

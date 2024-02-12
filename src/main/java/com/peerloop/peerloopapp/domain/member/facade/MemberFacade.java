@@ -1,7 +1,7 @@
 package com.peerloop.peerloopapp.domain.member.facade;
 
-import com.peerloop.peerloopapp.domain.member.dto.request.SignUpRequest;
-import com.peerloop.peerloopapp.domain.member.dto.response.SignUpResponse;
+import com.peerloop.peerloopapp.domain.member.api.request.SignUpRequest;
+import com.peerloop.peerloopapp.domain.member.api.response.SignUpResponse;
 import com.peerloop.peerloopapp.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

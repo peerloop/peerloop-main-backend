@@ -1,7 +1,7 @@
 package com.peerloop.peerloopapp.domain.member.api;
 
-import com.peerloop.peerloopapp.domain.member.dto.request.SignUpRequest;
-import com.peerloop.peerloopapp.domain.member.dto.response.SignUpResponse;
+import com.peerloop.peerloopapp.domain.member.api.request.SignUpRequest;
+import com.peerloop.peerloopapp.domain.member.api.response.SignUpResponse;
 import com.peerloop.peerloopapp.domain.member.facade.MemberFacade;
 import com.peerloop.peerloopapp.global.common.dto.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;

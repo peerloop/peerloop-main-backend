@@ -3,9 +3,9 @@ package com.peerloop.peerloopapp.domain.auth.facade;
 
 import static com.peerloop.peerloopapp.global.exception.ErrorCode.FAILED_LOGIN_BY_ANYTHING;
 
-import com.peerloop.peerloopapp.domain.auth.dto.request.LogInRequest;
-import com.peerloop.peerloopapp.domain.auth.dto.request.TokenReissueRequest;
-import com.peerloop.peerloopapp.domain.auth.dto.response.TokenReissueResponse;
+import com.peerloop.peerloopapp.domain.auth.api.request.LogInRequest;
+import com.peerloop.peerloopapp.domain.auth.api.request.TokenReissueRequest;
+import com.peerloop.peerloopapp.domain.auth.api.response.TokenReissueResponse;
 import com.peerloop.peerloopapp.domain.auth.entity.Auth;
 import com.peerloop.peerloopapp.domain.auth.service.AuthService;
 import com.peerloop.peerloopapp.domain.member.entity.Member;
