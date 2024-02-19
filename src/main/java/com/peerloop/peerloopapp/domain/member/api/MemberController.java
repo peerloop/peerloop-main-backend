@@ -26,14 +26,14 @@ public class MemberController {
     private final MemberFacade memberFacade;
 
     // TODO: swagger에 자동으로 response status 적용되게 하려면 @ResponseStatus를 추가로 사용해야 할 것 같음
-    @Operation(summary = "회원가입", description = "email과 password를 이용하여 회원가입을 진행합니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201")
-    })
-    @PostMapping("/sign-up")
-    public ResponseEntity<SuccessResponse<SignUpResponse>> signUp(@Valid @RequestBody SignUpRequest request) {
-        SignUpResponse response = memberFacade.signUp(request);
-        // TODO: ResponseEntity.created(uri) 형태로 변경
-        return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponse<>(response));
-    }
+//    @Operation(summary = "회원가입", description = "email과 password를 이용하여 회원가입을 진행합니다.")
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "201")
+//    })
+//    @PostMapping("/sign-up")
+//    public ResponseEntity<SuccessResponse<SignUpResponse>> signUp(@Valid @RequestBody SignUpRequest request) {
+//        SignUpResponse response = memberFacade.signUp(request);
+//        // TODO: ResponseEntity.created(uri) 형태로 변경
+//        return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponse<>(response));
+//    }
 }

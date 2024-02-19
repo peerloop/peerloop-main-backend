@@ -53,7 +53,7 @@ public class JwtProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createAccessToken(Long memberId) {
+    public String createAccessToken(String memberId) {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + accessTokenExpirySeconds * MILLI_SECOND);
 
@@ -67,7 +67,7 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String createRefreshToken(Long memberId) {
+    public String createRefreshToken(String memberId) {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + refreshTokenExpirySeconds * MILLI_SECOND);
 
@@ -116,7 +116,7 @@ public class JwtProvider {
         Claims claims = getClaims(token);
 
         // claim 정보 가져오기
-        Long memberId = claims.get(ID_KEY, Long.class);
+        String memberId = claims.get(ID_KEY, String.class);
         String role = claims.get(ROLE_KEY, String.class);
 
         // Authentication 객체를 만들기 위한 principal과 authroities 생성
@@ -127,7 +127,7 @@ public class JwtProvider {
         return new JwtAuthenticationToken(principal, null, authorities);
     }
 
-    public TokenDto generateToken(Long memberId) {
+    public TokenDto generateToken(String memberId) {
         String accessToken = createAccessToken(memberId);
         String refreshToken = createRefreshToken(memberId);
         return TokenDto.of(accessToken, refreshToken, TOKEN_TYPE);

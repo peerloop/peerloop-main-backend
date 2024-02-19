@@ -14,10 +14,10 @@ public class MemberFacade {
 
     private final MemberService memberService;
 
-    @Transactional
-    public SignUpResponse signUp(SignUpRequest request) {
-        Long memberId = memberService.join(request.email(), request.password());
-
-        return SignUpResponse.of(memberId);
-    }
+//    @Transactional
+//    public SignUpResponse signUp(SignUpRequest request) {
+//        Long memberId = memberService.join(request.email(), request.password());
+//
+//        return SignUpResponse.of(memberId);
+//    }
 }

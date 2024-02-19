@@ -27,14 +27,14 @@ public class Auth extends BaseTimeEntity {
 
     @NotNull
     @Column(nullable = false, unique = true)
-    private Long memberId;
+    private String memberId;
 
     @NotBlank
     @Column(nullable = false, unique = true)
     private String refreshToken;
 
     @Builder
-    public Auth(Long memberId, String refreshToken) {
+    public Auth(String memberId, String refreshToken) {
         this.memberId = memberId;
         this.refreshToken = refreshToken;
     }

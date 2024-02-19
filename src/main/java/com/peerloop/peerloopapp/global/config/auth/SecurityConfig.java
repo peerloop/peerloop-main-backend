@@ -28,6 +28,7 @@ public class SecurityConfig {
             "/",
             "/api/v1/sign-up",
             "/api/v1/login",
+            "/api/v1/login/oauth2/callback/**",
             "/api/v1/reissue-token",
             "/error",
             // swagger
