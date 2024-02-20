@@ -1,0 +1,66 @@
+server:
+  port: 8080
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=false&useUnicode=true&serverTimezone=${DB_TIMEZONE}&allowPublicKeyRetrieval=true&characterEncoding=UTF-8
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+
+oauth2:
+  google:
+    authorization-uri: https://accounts.google.com/o/oauth2/auth?client_id=259077679856-pdc8d7kq5tm5au1ssf7rj26854a2m5mj.apps.googleusercontent.com&redirect_uri=http://localhost:8080/api/v1/login/oauth2/callback/google&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile
+    client-id: ${OAUTH2_GOOGLE_CLIENT_ID}
+    client-secret: ${OAUTH2_GOOGLE_CLIENT_SECRET}
+    redirect-uri: http://localhost:8080/api/v1/login/oauth2/callback/google
+    token-uri: https://oauth2.googleapis.com/token
+    resource-uri: https://www.googleapis.com/oauth2/v2/userinfo
+  github:
+    authorization-uri: https://github.com/login/oauth/authorize?client_id=0da71366e95f532cb31a
+    client-id: ${OAUTH2_GITHUB_CLIENT_ID}
+    client-secret: ${OAUTH2_GITHUB_CLIENT_SECRET}
+    redirect-uri: http://localhost:8080/api/v1/login/oauth2/callback/github
+    token-uri: https://github.com/login/oauth/access_token
+    resource-uri: https://api.github.com/user
+
+jwt:
+  secret: ${JWT_SECRET_KEY}
+  access_token_expiration_ms: 1800000
+  refresh_token_expiration_ms: 1209600000
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.springframework.security: DEBUG
+
+springdoc:
+  api-docs:
+    path: /api-docs
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /index.html
+    enabled: true
+    groups-order: asc
+    tags-sorter: alpha
+    operations-sorter: method
+    display-request-duration: true
+    doc-expansion: none
+  cache:
+    disabled: true
+  override-with-generic-response: false
+  model-and-view-allowed: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json

@@ -1,9 +1,9 @@
 package com.peerloop.peerloopapp.global.auth.jwt.dto;
 
 public record MemberDetails(
-        Long memberId
+        String memberId
 ) {
-    public static MemberDetails of(Long memberId) {
+    public static MemberDetails of(String memberId) {
         return new MemberDetails(memberId);
     }
 }
