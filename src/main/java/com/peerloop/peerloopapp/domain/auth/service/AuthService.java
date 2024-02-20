@@ -5,6 +5,7 @@ import static com.peerloop.peerloopapp.global.exception.ErrorCode.FAILED_LOGIN_B
 import static com.peerloop.peerloopapp.global.exception.ErrorCode.NOT_FOUND_REFRESH_TOKEN;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.peerloop.peerloopapp.domain.auth.constant.OAuthProvider;
 import com.peerloop.peerloopapp.domain.auth.dto.OAuthMemberInfo;
 import com.peerloop.peerloopapp.domain.auth.entity.Auth;
 import com.peerloop.peerloopapp.domain.auth.repository.AuthRepository;
@@ -31,21 +32,25 @@ public class AuthService {
     private final AuthRepository authRepository;
     private final Environment env;
 
-    public OAuthMemberInfo getOAuthMemberInfo(String code, String oAuthProvider) {
+    public String getOAuthAuthorizationUri(OAuthProvider oAuthProvider) {
+        return env.getProperty("oauth2." + oAuthProvider.getOAuthProvider() + ".authorization-uri");
+    }
+
+    public OAuthMemberInfo getOAuthMemberInfo(String code, OAuthProvider oAuthProvider) {
         // [1] Retrieve OAuth access token
         String oauthAccessToken = getOAuthAccessToken(code, oAuthProvider);
 
         // [2] Get member info (id)
-        String userinfoUri = env.getProperty("oauth2." + oAuthProvider + ".userinfo-uri");
+        String resourceUri = env.getProperty("oauth2." + oAuthProvider.getOAuthProvider() + ".resource-uri");
         // TODO: null exception handling
-        assert userinfoUri != null;
+        assert resourceUri != null;
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + oauthAccessToken);
 
         HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
         ResponseEntity<JsonNode> responseNode = restTemplate.exchange(
-                userinfoUri,
+                resourceUri,
                 HttpMethod.GET,
                 requestEntity,
                 JsonNode.class
@@ -64,10 +69,11 @@ public class AuthService {
      * @param oAuthProvider OAuth2 provider name. ex) google, github, etc
      * @return OAuth2 access token
      */
-    private String getOAuthAccessToken(String code, String oAuthProvider) {
-        String clientId = env.getProperty("oauth2." + oAuthProvider + ".client-id");
-        String clientSecret = env.getProperty("oauth2." + oAuthProvider + ".client-secret");
-        String redirectUri = env.getProperty("oauth2." + oAuthProvider + ".redirect-uri");
+    private String getOAuthAccessToken(String code, OAuthProvider oAuthProvider) {
+        String oAuthProviderName = oAuthProvider.getOAuthProvider();
+        String clientId = env.getProperty("oauth2." + oAuthProviderName + ".client-id");
+        String clientSecret = env.getProperty("oauth2." + oAuthProviderName + ".client-secret");
+        String redirectUri = env.getProperty("oauth2." + oAuthProviderName + ".redirect-uri");
 
         // Header
         HttpHeaders headers = new HttpHeaders();
@@ -85,7 +91,7 @@ public class AuthService {
         HttpEntity<LinkedMultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
 
         // Send POST request
-        String tokenUri = env.getProperty("oauth2." + oAuthProvider + ".token-uri");
+        String tokenUri = env.getProperty("oauth2." + oAuthProviderName + ".token-uri");
         assert tokenUri != null;
         ResponseEntity<JsonNode> responseNode = restTemplate.exchange(
                 tokenUri,

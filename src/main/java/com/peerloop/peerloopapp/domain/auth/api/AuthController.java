@@ -4,6 +4,7 @@ import com.peerloop.peerloopapp.domain.auth.api.request.LogInRequest;
 import com.peerloop.peerloopapp.domain.auth.api.request.TokenReissueRequest;
 import com.peerloop.peerloopapp.domain.auth.api.response.AuthResponse;
 import com.peerloop.peerloopapp.domain.auth.api.response.TokenReissueResponse;
+import com.peerloop.peerloopapp.domain.auth.constant.OAuthProvider;
 import com.peerloop.peerloopapp.domain.auth.facade.AuthFacade;
 import com.peerloop.peerloopapp.global.auth.jwt.dto.MemberDetails;
 import com.peerloop.peerloopapp.global.auth.jwt.dto.TokenDto;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Tag(name = "02. Auth Controller", description = "인증 인가 관련 API")
 @RestController
@@ -32,15 +34,27 @@ public class AuthController {
     // TODO: EXPIRATION_SECONDS 따로 관리
     private static final Integer COOKIE_EXPIRATION_SECONDS = 7 * 24 * 60 * 60;
 
-    @Operation(summary = "Social Login", description = "Currently support Google.")
-    @GetMapping("login/oauth2/callback/{oauthServiceName}")
-    public ResponseEntity<AuthResponse> oauthCallback(@RequestParam(name = "code") String code, @PathVariable(name = "oauthServiceName") String oauthServiceName) {
-        AuthResponse responseBody = authFacade.oauthLogin(code, oauthServiceName);
+    @Operation(summary = "Google OAuth login", description = "Obtain Google OAuth authorization URI")
+    @GetMapping("/login/oauth2/google")
+    public RedirectView googleOAuthLogin() {
+        String authorizationUri = authFacade.getOAuthAuthorizationUri(OAuthProvider.GOOGLE);
+        return new RedirectView(authorizationUri);
+    }
 
-        // TODO: 로그인 api에서 token에 "Bearer " prefix를 붙여서 보낼 필요가 없나? 클라이언트 단에서 authorization header에 넣을 때 "Bearer "를 붙이면 되나?
+    @Operation(summary = "GitHub OAuth login", description = "Obtain GitHub OAuth authorization URI")
+    @GetMapping("/login/oauth2/github")
+    public RedirectView githubOAuthLogin() {
+        String authorizationUri = authFacade.getOAuthAuthorizationUri(OAuthProvider.GITHUB);
+        return new RedirectView(authorizationUri);
+    }
+
+    @Operation(summary = "OAuth Redirection URI", description = "Currently support 'google' and 'github'")
+    @GetMapping("login/oauth2/callback/{oAuthProvider}")
+    public ResponseEntity<AuthResponse> oauthCallback(@RequestParam(name = "code") String code, @PathVariable(name = "oAuthProvider") String oAuthProvider) {
+        AuthResponse responseBody = authFacade.oauthLogin(code, OAuthProvider.fromValue(oAuthProvider));
+
         // TODO: access token, refresh token을 모두 json response body에 포함하는 것이 safe 한가?
         // TODO: SET_COOKIE 과연 안전한가?
-
         // TODO: 지금처럼 response body에 token을 넘겨주게 되면, front 측에서 받을 방법이 없다. 보통 어떻게 처리하는지? picktoss에서는 token을 query string으로 포함하는 URL로 redirect시켜서 프런트가 캐치할 수 있도록 해줬다.
         return ResponseEntity.ok()
                 .body(responseBody);
@@ -54,7 +68,7 @@ public class AuthController {
         authFacade.logout(memberDetails.memberId());
         return ResponseEntity.ok().body(new IdResponse(memberDetails.memberId()));
     }
-//
+
     @Operation(summary = "액세스 토큰 재발급", description = "Refresh Token을 통해 Access Token을 재발급합니다.")
     @PostMapping("/reissue-token")
     public ResponseEntity<SuccessResponse<TokenReissueResponse>> reissueAccessToken(@Valid @RequestBody TokenReissueRequest request) {
@@ -70,7 +84,6 @@ public class AuthController {
         String memberId = memberDetails.memberId();
         return ResponseEntity.ok().body(new IdResponse(memberId));
     }
-
 
     private ResponseCookie createTokenCookie(String tokenType, String token) {
         return ResponseCookie.from(tokenType, token)

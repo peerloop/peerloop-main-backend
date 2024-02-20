@@ -5,6 +5,7 @@ import static com.peerloop.peerloopapp.global.exception.ErrorCode.DUPLICATED_EMA
 import static com.peerloop.peerloopapp.global.exception.ErrorCode.NOT_FOUND_BY_EMAIL;
 import static com.peerloop.peerloopapp.global.exception.ErrorCode.NOT_FOUND_BY_ID;
 
+import com.peerloop.peerloopapp.domain.auth.constant.OAuthProvider;
 import com.peerloop.peerloopapp.domain.auth.dto.OAuthMemberInfo;
 import com.peerloop.peerloopapp.domain.member.entity.Member;
 import com.peerloop.peerloopapp.domain.member.repository.MemberRepository;
@@ -31,7 +32,7 @@ public class MemberService {
         return memberRepository.existsById(memberId);
     }
 
-    public void createOAuthMember(OAuthMemberInfo oAuthMemberInfo, String oAuthProvider, MemberRole role) {
+    public void createOAuthMember(OAuthMemberInfo oAuthMemberInfo, OAuthProvider oAuthProvider, MemberRole role) {
         String memberId = oAuthMemberInfo.getId();
         String email = oAuthMemberInfo.getEmail();
         Member member = Member.createMember(memberId, email, oAuthProvider, role);

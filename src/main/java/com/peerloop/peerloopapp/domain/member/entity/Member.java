@@ -1,5 +1,6 @@
 package com.peerloop.peerloopapp.domain.member.entity;
 
+import com.peerloop.peerloopapp.domain.auth.constant.OAuthProvider;
 import com.peerloop.peerloopapp.global.common.domain.BaseTimeEntity;
 import com.peerloop.peerloopapp.global.common.enums.MemberRole;
 import jakarta.persistence.Column;
@@ -32,9 +33,10 @@ public class Member extends BaseTimeEntity {
     @Column(name = "email")
     private String email;
 
-    @NotBlank
+    @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "oauth_provider", nullable = false)
-    private String oAuthProvider;
+    private OAuthProvider oAuthProvider;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -44,7 +46,7 @@ public class Member extends BaseTimeEntity {
     // -- Construction Logic
 
     // Create OAuth Member (In OAuth flow, detailed member info such as bio is NOT provided)
-    public static Member createMember(String id, String email, String oAuthProvider, MemberRole role) {
+    public static Member createMember(String id, String email, OAuthProvider oAuthProvider, MemberRole role) {
         return Member.builder()
                 .id(id)
                 .email(email)

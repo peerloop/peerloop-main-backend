@@ -22,17 +22,19 @@ spring:
 
 oauth2:
   google:
+    authorization-uri: https://accounts.google.com/o/oauth2/auth?client_id=259077679856-pdc8d7kq5tm5au1ssf7rj26854a2m5mj.apps.googleusercontent.com&redirect_uri=http://localhost:8080/api/v1/login/oauth2/callback/google&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile
     client-id: ${OAUTH2_GOOGLE_CLIENT_ID}
     client-secret: ${OAUTH2_GOOGLE_CLIENT_SECRET}
     redirect-uri: http://localhost:8080/api/v1/login/oauth2/callback/google
     token-uri: https://oauth2.googleapis.com/token
-    userinfo-uri: https://www.googleapis.com/oauth2/v2/userinfo
+    resource-uri: https://www.googleapis.com/oauth2/v2/userinfo
   github:
+    authorization-uri: https://github.com/login/oauth/authorize?client_id=0da71366e95f532cb31a
     client-id: ${OAUTH2_GITHUB_CLIENT_ID}
     client-secret: ${OAUTH2_GITHUB_CLIENT_SECRET}
     redirect-uri: http://localhost:8080/api/v1/login/oauth2/callback/github
     token-uri: https://github.com/login/oauth/access_token
-    userinfo-uri: https://api.github.com/user
+    resource-uri: https://api.github.com/user
 
 jwt:
   secret: ${JWT_SECRET_KEY}

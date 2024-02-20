@@ -7,6 +7,7 @@ import com.peerloop.peerloopapp.domain.auth.api.request.LogInRequest;
 import com.peerloop.peerloopapp.domain.auth.api.request.TokenReissueRequest;
 import com.peerloop.peerloopapp.domain.auth.api.response.AuthResponse;
 import com.peerloop.peerloopapp.domain.auth.api.response.TokenReissueResponse;
+import com.peerloop.peerloopapp.domain.auth.constant.OAuthProvider;
 import com.peerloop.peerloopapp.domain.auth.dto.OAuthMemberInfo;
 import com.peerloop.peerloopapp.domain.auth.entity.Auth;
 import com.peerloop.peerloopapp.domain.auth.service.AuthService;
@@ -29,9 +30,12 @@ public class AuthFacade {
     private final MemberService memberService;
     private final JwtProvider jwtProvider;
 
+    public String getOAuthAuthorizationUri(OAuthProvider oAuthProvider) {
+        return authService.getOAuthAuthorizationUri(oAuthProvider);
+    }
 
     @Transactional
-    public AuthResponse oauthLogin(String code, String oAuthProvider) {
+    public AuthResponse oauthLogin(String code, OAuthProvider oAuthProvider) {
         // [1] Retrieve member information from oauth provider
         OAuthMemberInfo oAuthMemberInfo = authService.getOAuthMemberInfo(code, oAuthProvider);
         String memberId = oAuthMemberInfo.getId();
